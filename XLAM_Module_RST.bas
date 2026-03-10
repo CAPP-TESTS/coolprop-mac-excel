@@ -13,7 +13,7 @@ Attribute VB_Name = "Module1"
 Option Explicit
 #If Mac Then
 	' Shell access to create symlink at runtime
-	Private Declare Function c_system Lib "/usr/lib/libSystem.B.dylib" Alias "system" (ByVal command As String) As Long
+	Private Declare PtrSafe Function c_system Lib "/usr/lib/libSystem.B.dylib" Alias "system" (ByVal command As String) As Long
 
     ' Even though the functions are exported with a leading underscore, Excel 2011 for Mac doesn't want the leading underscore as part of name
     Private Declare PtrSafe Function PropsSI_private Lib "/tmp/libCoolProp.dylib" Alias "PropsSI" (ByVal output As String, ByVal Name1 As String, ByVal Value1 As Double, ByVal Name2 As String, ByVal Value2 As Double, ByVal Ref As String) As Double
