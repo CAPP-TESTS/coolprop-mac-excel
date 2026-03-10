@@ -81,13 +81,15 @@ Private Sub EnsureCoolPropLoaded()
 
         If archResult <> "arm64" And archResult <> "x86_64" Then
             ' Tier 2: MacScript was blocked by the sandbox.
-            ' /Library/Apple/ exists ONLY on Apple Silicon Macs (it holds
-            ' Rosetta 2 infrastructure). Intel Macs do not have it.
-            Dim appleDir As String
+            ' The dyld shared cache uses architecture-specific filenames:
+            '   ARM Macs  -> dyld_shared_cache_arm64e
+            '   Intel Macs -> dyld_shared_cache_x86_64h (or x86_64)
+            ' This directory is world-readable and present on macOS 11+.
+            Dim dyldArm As String
             On Error Resume Next
-            appleDir = Dir("/Library/Apple", vbDirectory)
+            dyldArm = Dir("/System/Library/dyld/dyld_shared_cache_arm64e*")
             On Error GoTo 0
-            If appleDir <> "" Then
+            If dyldArm <> "" Then
                 archResult = "arm64"
             Else
                 archResult = "x86_64"
