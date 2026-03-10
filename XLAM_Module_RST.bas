@@ -12,9 +12,6 @@ Attribute VB_Name = "Module1"
 
 Option Explicit
 #If Mac Then
-	' Shell access to create symlink at runtime
-	Private Declare PtrSafe Function c_system Lib "/usr/lib/libSystem.B.dylib" Alias "system" (ByVal command As String) As Long
-
     ' Even though the functions are exported with a leading underscore, Excel 2011 for Mac doesn't want the leading underscore as part of name
     Private Declare PtrSafe Function PropsSI_private Lib "/tmp/libCoolProp.dylib" Alias "PropsSI" (ByVal output As String, ByVal Name1 As String, ByVal Value1 As Double, ByVal Name2 As String, ByVal Value2 As Double, ByVal Ref As String) As Double
     Private Declare PtrSafe Function PhaseSI_private Lib "/tmp/libCoolProp.dylib" Alias "PhaseSI" (ByVal Name1 As String, ByVal Value1 As Double, ByVal Name2 As String, ByVal Value2 As Double, ByVal Ref As String, ByVal output As String, ByVal n As Integer) As Long
@@ -80,20 +77,14 @@ Private Sub EnsureCoolPropLoaded()
         ' The shell one-liner writes "arm64" or "x86_64" to a temp file.
         
         Dim archResult As String
-        Dim archFile As String
-        Dim fileNum As Integer
-        
-        archFile = "/tmp/vba_coolprop_arch.txt"
-        
-        c_system "if uname -v | grep -q ARM64 && sysctl -n machdep.cpu.brand_string | grep -iq Apple; " _
-               & "then echo arm64 > " & archFile & "; " _
-               & "else echo x86_64 > " & archFile & "; fi"
-        
-        fileNum = FreeFile
-        Open archFile For Input As #fileNum
-        Line Input #fileNum, archResult
-        Close #fileNum
-        
+
+        ' Use MacScript (AppleScript) instead of c_system to avoid dependency
+        ' on /usr/lib/libSystem.B.dylib which no longer exists on disk
+        ' since macOS Big Sur (11+) — Apple moved it to the shared dyld cache.
+        archResult = MacScript("do shell script ""if uname -v | grep -q ARM64 " _
+               & "&& sysctl -n machdep.cpu.brand_string | grep -iq Apple; " _
+               & "then echo arm64; else echo x86_64; fi""")
+
         archResult = Trim(archResult)
         
         If archResult = "arm64" Then
@@ -111,7 +102,7 @@ Private Sub EnsureCoolPropLoaded()
     libPath = addInsFolder & libName
     
     ' Create a symlink so all Declare statements resolve to the right binary
-    c_system "ln -sf '" & libPath & "' /tmp/libCoolProp.dylib"
+    MacScript "do shell script ""ln -sf '" & libPath & "' /tmp/libCoolProp.dylib"""
     m_CoolPropInitialized = True
 #End If
 End Sub
