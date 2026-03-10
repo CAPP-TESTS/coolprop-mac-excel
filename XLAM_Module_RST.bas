@@ -54,14 +54,14 @@ Private m_CoolPropInitialized As Boolean
 Private Sub EnsureCoolPropLoaded()
 #If Mac Then
     If m_CoolPropInitialized Then Exit Sub
-    
+
     Dim libName As String
     Dim libPath As String
     Dim addInsFolder As String
-    
+
     addInsFolder = Environ("Home") _
         & "/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/"
-    
+
     ' -------------------------------------------------------------------
     ' Step 1: Determine if Excel is running as 64-bit or 32-bit.
     '         MAC_OFFICE_VERSION >= 15 with VBA7 indicates 64-bit
@@ -69,24 +69,31 @@ Private Sub EnsureCoolPropLoaded()
     ' -------------------------------------------------------------------
     #If MAC_OFFICE_VERSION >= 15 And VBA7 Then
         ' 64-bit Excel for Mac -> need to distinguish x86_64 vs arm64
-        '
-        ' Combined check (both must be true for Apple Silicon):
-        '   1) uname -v contains "ARM64"
-        '   2) sysctl -n machdep.cpu.brand_string contains "Apple" (case-insensitive)
-        '
-        ' The shell one-liner writes "arm64" or "x86_64" to a temp file.
-        
         Dim archResult As String
 
-        ' Use MacScript (AppleScript) instead of c_system to avoid dependency
-        ' on /usr/lib/libSystem.B.dylib which no longer exists on disk
-        ' since macOS Big Sur (11+) — Apple moved it to the shared dyld cache.
-        archResult = MacScript("do shell script ""if uname -v | grep -q ARM64 " _
-               & "&& sysctl -n machdep.cpu.brand_string | grep -iq Apple; " _
-               & "then echo arm64; else echo x86_64; fi""")
+        ' Tier 1: Try MacScript (works on Excel 2011 and non-sandboxed
+        '         Excel 2016). Fails with error 5 in sandboxed Office 365.
+        On Error Resume Next
+        archResult = MacScript("do shell script ""uname -m""")
+        On Error GoTo 0
 
         archResult = Trim(archResult)
-        
+
+        If archResult <> "arm64" And archResult <> "x86_64" Then
+            ' Tier 2: MacScript was blocked by the sandbox.
+            ' /Library/Apple/ exists ONLY on Apple Silicon Macs (it holds
+            ' Rosetta 2 infrastructure). Intel Macs do not have it.
+            Dim appleDir As String
+            On Error Resume Next
+            appleDir = Dir("/Library/Apple", vbDirectory)
+            On Error GoTo 0
+            If appleDir <> "" Then
+                archResult = "arm64"
+            Else
+                archResult = "x86_64"
+            End If
+        End If
+
         If archResult = "arm64" Then
             ' Apple Silicon (M1, M2, M3, M4, ...)
             libName = "libCoolProp_arm_64.dylib"
@@ -98,11 +105,20 @@ Private Sub EnsureCoolPropLoaded()
         ' 32-bit Excel for Mac (Excel 2011 or earlier) -> always x86 32-bit
         libName = "libCoolProp_x86_32.dylib"
     #End If
-    
+
     libPath = addInsFolder & libName
-    
-    ' Create a symlink so all Declare statements resolve to the right binary
-    MacScript "do shell script ""ln -sf '" & libPath & "' /tmp/libCoolProp.dylib"""
+
+    ' -------------------------------------------------------------------
+    ' Step 2: Deploy the correct dylib to /tmp/ so all Declare statements
+    '         resolve to /tmp/libCoolProp.dylib.
+    '         Uses pure VBA FileCopy — no dependency on MacScript,
+    '         libSystem.B.dylib, or any shell command.
+    ' -------------------------------------------------------------------
+    On Error Resume Next
+    Kill "/tmp/libCoolProp.dylib"        ' remove stale file/symlink if present
+    On Error GoTo 0
+    FileCopy libPath, "/tmp/libCoolProp.dylib"
+
     m_CoolPropInitialized = True
 #End If
 End Sub
