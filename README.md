@@ -10,7 +10,7 @@ Scaricare le librerie CoolProp e il wrapper Excel sul Mac utilizzando uno dei du
 
 ### Metodo A — Automator App
 
-1. Scaricare [**Installer_CoolProp_per_Excel.app.zip**](https://github.com/CAPP-TESTS/coolprop-mac-excel/raw/refs/heads/main/Installer_CoolProp_per_Excel.app.zip)
+1. Scaricare [**Installer_CoolProp_per_Excel.app.zip**]([https://raw.githubusercontent.com/CAPP-TESTS/coolprop-mac-excel/refs/heads/main/Installer_CoolProp_per_Excel.app.zip)
 2. Decomprimere il file `.zip`
 3. Fare doppio clic su **Installer_CoolProp_per_Excel**
 4. Se macOS mostra l'avviso *"non può essere aperto perché proviene da uno sviluppatore non identificato"*, andare in **Impostazioni di Sistema → Privacy e Sicurezza** e fare clic su **Apri comunque**
