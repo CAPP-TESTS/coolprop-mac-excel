@@ -55,27 +55,36 @@ Lo script peocede a rilevare automaticamente l'architettura (_Apple Silicon o In
 
 ---
 
-## 3. Aggiungere il componente aggiuntivo CoolProp in Excel
+## 3. Caricare il componente aggiuntivo CoolProp_RST in Excel
 
 Dopo aver avviato Excel tramite il launcher script
 
 1. Aprire una nuova cartella vuota di lavoro
+.
 2. Andare al menu **Strumenti → Componenti aggiuntivi di Excel**
-3. In virtù della posizione di download del wrapper XLAM dovrebbe comparire automaticamente in elenco il componente **COOLPROP_RST**
+.
+3. In virtù della directory di destinazione dovrebbe comparire automaticamente in elenco anche **COOLPROP_RST** tra i componenti disponibili per il caricamento
 
 ![Elenco degli Add-In disponibili](/images/0301_AddinList.png)
 
-_Altrimenti, cliccare su **Sfoglia** e navigare fino alla cartella in cui è stato scaricato l'add-in_
-   ```
-   ~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/
-   ```
-_da cui selezionare **CoolProp_RST.xlam** e fare clic su **OK**_
+> _Altrimenti, cliccare su **Sfoglia** e navigare fino alla cartella in cui è stato scaricato l'add-in_
+>   ```
+>   ~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/
+>   ```
+> _da cui selezionare **CoolProp_RST.xlam** e fare clic su **OK**_
 
-4. Verificare che non siano spuntati eventuali altri componenti CoolProp, mettere la spunta su **CoolProp_RST** (_qualora non già presente_) e confermare con **OK**
+.
+4. Verificare quindi che NON siano spuntati eventuali altri componenti CoolProp, mettere la spunta su **CoolProp_RST** (_qualora non già presente_) ed infine confermare con **OK**
 
 \
-A questo punto le funzioni CoolProp sono disponibili in qualsiasi foglio di lavoro. Ad esempio:
+A questo punto le funzioni CoolProp saranno disponibili in qualsiasi foglio di lavoro, a patto di avviare semore Excel con il launcher. Il corretto funzionamento di wrapper XLA + Libreria collegata dinamicamente può esser verificato tramite il file Excel [**TestExcel_RST.xlsx**](https://raw.githubusercontent.com/CAPP-TESTS/coolprop-mac-excel/refs/heads/main/TestExcel_RST.xlsx) e/o richiamando le funzioni di CoolProp da un altro foglio, e.g.
 
 ```
 =PropsSI("H";"T";300;"P";101325;"Water")
 ```
+
+> _Per chi usa impostazioni region/language English per MacOS/Excel il separatore nelle formule CoolProp è la virgola_
+
+---
+
+## 4. Utilizzo di Automator per launcher script
