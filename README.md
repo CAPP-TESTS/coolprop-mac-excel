@@ -117,7 +117,7 @@ Si può utilizzare appunto Automator per realizzare un collegamento-app da utili
 
 Onde evitare risultati non corretti in virtù dell'eventuale uso di Rosetta per emulazione x86 64bit su ARM, lo script procede al rilevamento dell'architettura tramite il controllo degli output di 2 comandi :
 
-- `uname -v` = lo script del launcher verifica se le release/build del sistema contengano la stringa ARM64 - in accordo alla [nomenclatura usata da Apple per releaae OS e build Kernel](https://theapplewiki.com/wiki/Kernel)
+- `uname -v` = lo script del launcher verifica se le release/build del sistema contengano la stringa ARM64 - in accordo alla [nomenclatura usata da Apple per release OS e build Kernel](https://theapplewiki.com/wiki/Kernel)
 .
 - `sysctl -n machdep.cpu.brand_string` = lo script verifica se l'identificativo vendor/model di processore/CPU contenga la stringa Apple (_maiuscole/minuscole indifferenti_)
 
