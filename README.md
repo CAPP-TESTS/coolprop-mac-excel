@@ -79,9 +79,11 @@ Dopo aver avviato Excel tramite il launcher script
 \
 A questo punto le funzioni CoolProp saranno disponibili in qualsiasi foglio di lavoro, a patto di avviare semore Excel con il launcher. Il corretto funzionamento di wrapper XLA + Libreria collegata dinamicamente può esser verificato tramite il file Excel [**TestExcel_RST.xlsx**](https://raw.githubusercontent.com/CAPP-TESTS/coolprop-mac-excel/refs/heads/main/TestExcel_RST.xlsx) e/o richiamando le funzioni di CoolProp da un altro foglio, e.g.
 
-```
-=PropsSI("H";"T";300;"P";101325;"Water")
-```
+
+| Formula in Excel                             | Valore Atteso        |
+|----------------------------------------------|----------------------|
+| ` =PropsSI("H";"T";300;"P";101325;"Water") ` | 112654,9             |
+| ` =Props1SI("Water";"Tcrit") `               | 647,096              |
 
 > _Per chi usa impostazioni region/language English per MacOS/Excel il separatore nelle formule CoolProp è la virgola_
 
