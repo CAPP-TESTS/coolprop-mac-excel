@@ -31,7 +31,7 @@ bash ~/Desktop/install_coolprop_excel_macos.sh
 | `libCoolProp_x86_32.dylib` | Libreria CoolProp x86 32bit  | `~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/` | 
 | `launch_excel_coolprop.sh` | Launcher script per Excel    | `~/Desktop/`                                                                             |
 
-![Visualizzazione in Finder dei file salvati nella directory Add-Ins in uso da Excel](/images/0101Addin.png)
+![Visualizzazione in Finder dei file salvati nella directory Add-Ins in uso da Excel](/images/0101_Addin.png)
 
 ---
 
@@ -47,7 +47,7 @@ bash ~/Desktop/launch_excel_coolprop.sh
 
 Lo script peocede a rilevare automaticamente l'architettura (_Apple Silicon o Intel x86_) ed a creare i symlink /tmp necessari per il caricamento delle librerie CoolProp. A quel punto avvia Excel.
 
-![Esecuzione del launcher script per l'avvio di Excel con supporto CoolProp](/images/0101Addin.png)
+![Esecuzione del launcher script per l'avvio di Excel con supporto CoolProp](/images/0201_Launcher.png)
 
 ---
 
