@@ -111,3 +111,29 @@ Si può utilizzare appunto Automator per realizzare un collegamento-app da utili
 
 6. Andare al menu File e cliccare su Salva, scegliendo un nome per l'app e la destinazione (_e.g. la Scrivania_)
 
+---
+
+## 5. Note sul rilevamento Apple Silicon (ARM64)
+
+Onde evitare risultati non corretti in virtù dell'eventuale uso di Rosetta per emulazione x86 64bit su ARM, lo script procede al rilevamento dell'architettura tramite il controllo degli output di 2 comandi :
+
+- `uname -v` = lo script del launcher verifica se le release/build del sistema contengano la stringa ARM64 - in accordo alla [nomenclatura usata da Apple per releaae OS e build Kernel](https://theapplewiki.com/wiki/Kernel)
+.
+- `sysctl -n machdep.cpu.brand_string` = lo script verifica se l'identificativo vendor/model di processore/CPU contenga la stringa Apple (_maiuscole/minuscole indifferenti_)
+
+\
+Quando entrambi i controlli sono soddisfatti, lo script restituisce Apple Silicon (ARM) come architettura individuata e provvede a collegare dinamicamente la libreria CoolProp per ARM64. In caso contrario, restituisce x86 e collega le librerie CoolProp per x86 32/64bit.
+
+A meno quindi di eventuali variazioni future nella nomenclatura di build/release ARM e/o CPU Silicon da parte di Apple, la logica di controllo è valida anche per dispositivi futuri con MacOS e SOC ARM.
+
+Ovviamente, in caso di eventuali problemi nel rilevamento, è possibile aprire una nota in **Issue-Tracker**, riportando gli output di tali 2 comandi da Terminale
+
+---
+
+## Licenza
+
+MIT
+
+## Autore
+
+[RAW](https://rawmain.github.io/) - _aka RST_
