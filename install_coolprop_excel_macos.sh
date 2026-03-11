@@ -22,6 +22,6 @@ download "CoolProp_RST.xlam"          "$ADDIN_DIR"
 download "libCoolProp_arm_64.dylib"   "$ADDIN_DIR"
 download "libCoolProp_x86_64.dylib"   "$ADDIN_DIR"
 download "libCoolProp_x86_32.dylib"   "$ADDIN_DIR"
-download "Excel.with.CoolProp.app.zip" "$DESKTOP"
+download "Launcher_Excel_con_CoolProp.app.zip" "$DESKTOP"
 
 echo "Add-in location: $ADDIN_DIR"
