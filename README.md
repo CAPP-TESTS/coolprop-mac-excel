@@ -22,7 +22,11 @@ Aprire il Terminale ed eseguire:
 ```bash
 curl -fSL -o ~/Desktop/install_coolprop_excel_macos.sh \
   https://raw.githubusercontent.com/CAPP-TESTS/coolprop-mac-excel/refs/heads/main/install_coolprop_excel_macos.sh
+```
 
+Quindi lanciare l'esecuzione dello script
+
+```bash
 bash ~/Desktop/install_coolprop_excel_macos.sh
 ```
 
@@ -55,7 +59,11 @@ Aprire il Terminale ed eseguire:
 ```bash
 curl -fSL -o ~/Desktop/launch_excel_coolprop.sh \
   https://raw.githubusercontent.com/CAPP-TESTS/coolprop-mac-excel/refs/heads/main/launch_excel_coolprop.sh
+```
 
+Quindi lanciare l'esecuzione dello script
+
+```bash
 bash ~/Desktop/launch_excel_coolprop.sh
 ```
 
