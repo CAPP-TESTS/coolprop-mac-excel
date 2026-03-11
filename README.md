@@ -1,23 +1,14 @@
-# CoolProp per Excel su macOS
+# CoolProp per Excel su MacOS
 
-CoolProp Excel Wrapper e installer per macOS x86 32/64bit — ARM (Apple Silicon).
+Raccolta di script per installare ed utilizzare [**CoolProp**](https://github.com/CoolProp/CoolProp) con Excel su sistemi MacOS - architetture x86 32/64bit ed ARM 64bit (Apple Silicon).
 
 ---
 
 ## 1. Installazione
 
-Scaricare le librerie CoolProp e il wrapper Excel sul Mac utilizzando uno dei due metodi seguenti.
+**Prima di iniziare : controllare di aver chiuso Excel e terminato le relative sessioni anche da Dock**.
 
-### Metodo A — Automator App
-
-1. Scaricare [**Installer_CoolProp_per_Excel.app.zip**](https://raw.githubusercontent.com/CAPP-TESTS/coolprop-mac-excel/refs/heads/main/Installer_CoolProp_per_Excel.app.zip)
-2. Decomprimere il file `.zip`
-3. Fare doppio clic su **Installer_CoolProp_per_Excel**
-4. Se macOS mostra l'avviso *"non può essere aperto perché proviene da uno sviluppatore non identificato"*, andare in **Impostazioni di Sistema → Privacy e Sicurezza** e fare clic su **Apri comunque**
-
-### Metodo B — Script bash
-
-Aprire il Terminale ed eseguire:
+Scaricare lo script d'installazione, aprendo una finestra di Terminale ed incollando il seguente comando
 
 ```bash
 curl -fSL -o ~/Desktop/install_coolprop_excel_macos.sh \
@@ -30,44 +21,33 @@ Quindi lanciare l'esecuzione dello script
 bash ~/Desktop/install_coolprop_excel_macos.sh
 ```
 
-### Cosa viene installato
+### Cosa viene scaricato dallo script d'installazione
 
-| File | Destinazione |
-|------|-------------|
-| `CoolProp_RST.xlam` | `~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/` |
-| `libCoolProp_arm_64.dylib` | stessa cartella |
-| `libCoolProp_x86_64.dylib` | stessa cartella |
-| `libCoolProp_x86_32.dylib` | stessa cartella |
-| `Launcher_Excel_con_CoolProp.app.zip` | `~/Desktop/` |
+| File                       | Descrizione                  | Destinazione                                                                             |
+|----------------------------|------------------------------|------------------------------------------------------------------------------------------|
+| `CoolProp_RST.xlam`        | XLAM CoolProp Wrapper Add-in | `~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/` |
+| `libCoolProp_arm_64.dylib` | Libreria CoolProp ARM 64bit  | `~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/` |           
+| `libCoolProp_x86_64.dylib` | Libreria CoolProp x86 64bit  | `~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/` |
+| `libCoolProp_x86_32.dylib` | Libreria CoolProp x86 32bit  | `~/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Add-Ins.localized/` | 
+| `launch_excel_coolprop.sh` | Launcher script per Excel    | `~/Desktop/`                                                                             |
+
+![Visualizzazione in Finder dei file salvati nella directory Add-Ins in uso da Excel](/images/0101_Addin.png)
 
 ---
 
 ## 2. Avvio di Excel con CoolProp
 
-Excel deve essere avviato in modo che le librerie CoolProp vengano caricate correttamente. Utilizzare uno dei due metodi seguenti.
+Excel deve essere avviato con una procedura apposita in modo che le librerie CoolProp vengano caricate in modo corretto, indistintamente dalle versioni di MacOS ed Excel in uso. 
 
-### Metodo A — Automator App
-
-1. Decomprimere il file **Launcher_Excel_con_CoolProp.app.zip** presente sul Desktop (scaricato durante l'installazione)
-2. Fare doppio clic su **Launcher_Excel_con_CoolProp**
-3. Se macOS mostra l'avviso *"non può essere aperto perché proviene da uno sviluppatore non identificato"*, andare in **Impostazioni di Sistema → Privacy e Sicurezza** e fare clic su **Apri comunque**
-
-### Metodo B — Script bash
-
-Aprire il Terminale ed eseguire:
-
-```bash
-curl -fSL -o ~/Desktop/launch_excel_coolprop.sh \
-  https://raw.githubusercontent.com/CAPP-TESTS/coolprop-mac-excel/refs/heads/main/launch_excel_coolprop.sh
-```
-
-Quindi lanciare l'esecuzione dello script
+Aprire una finestra di Terminale ed eseguire il launcher script scaricato in fase d'installazione
 
 ```bash
 bash ~/Desktop/launch_excel_coolprop.sh
 ```
 
-Lo script rileva automaticamente l'architettura (Apple Silicon o Intel x86), crea i symlink necessari e avvia Excel con le librerie CoolProp.
+Lo script peocede a rilevare automaticamente l'architettura (_Apple Silicon o Intel x86_) ed a creare i symlink /tmp necessari per il caricamento delle librerie CoolProp. A quel punto avvia Excel.
+
+![Esecuzione del launcher script per l'avvio di Excel con supporto CoolProp](/images/0201_Launcher.png)
 
 ---
 
